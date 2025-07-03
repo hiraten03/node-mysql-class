@@ -1,21 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
+const knex = require('../db/knex');
 
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '[password]',
+  password: 'password',
   database: 'todo_app'
 });
 
-let todos = [];
+//let todos = [];
 
 router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'ToDo App',
-    todos: todos,
-  });
+  knex("tasks")
+    .select("*")
+    .then(function (results) {
+      console.log(results);
+      res.render('index', {
+        title: 'ToDo App',
+        todos: results,
+      });
+    })
+    .catch(function (err) {
+      console.error(err);
+      res.render('index', {
+        title: 'ToDo App',
+      });
+    });
 });
 
 router.post('/', function (req, res, next) {
@@ -27,8 +39,14 @@ router.post('/', function (req, res, next) {
     console.log('success');
   });
   const todo = req.body.add;
-  todos.push(todo);
-  res.redirect('/');
+  //todos.push(todo);
+  connection.query(
+  `insert into tasks (user_id, content) values (1, '${todo}');`,
+  (error, results) => {
+    console.log(error);
+    res.redirect('/');
+  }
+);
 });
 
 module.exports = router;
