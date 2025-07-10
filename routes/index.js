@@ -10,8 +10,6 @@ const connection = mysql.createConnection({
   database: 'todo_app'
 });
 
-//let todos = [];
-
 router.get('/', function (req, res, next) {
   knex("tasks")
     .select("*")
@@ -39,14 +37,13 @@ router.post('/', function (req, res, next) {
     console.log('success');
   });
   const todo = req.body.add;
-  //todos.push(todo);
   connection.query(
-  `insert into tasks (user_id, content) values (1, '${todo}');`,
-  (error, results) => {
-    console.log(error);
-    res.redirect('/');
-  }
-);
+    `insert into tasks (user_id, content) values (1, '${todo}');`,
+    (error, results) => {
+      console.log(error);
+      res.redirect('/');
+    }
+  );
 });
 
 module.exports = router;
