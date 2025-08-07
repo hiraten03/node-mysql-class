@@ -1,19 +1,68 @@
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-  <form action="/" method="post">
+<head>
+  <title>タスク管理</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="date"] {
+      margin: 0 10px 10px 0;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      background: #e0f7fa;
+      margin-bottom: 5px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    #current-time {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <form id="task-form">
     <label>タスクの追加</label>
-    <input required type="text" name="add" placeholder="何をする?"/>
-    <input type="submit" value="追加"/>
+    <input required type="text" name="add" placeholder="何をする?" />
+    <label>締め切り</label>
+    <input type="date" name="deadline" required />
+    <input type="submit" value="追加" />
   </form>
-  <ul>
-    <% for(let todo of todos){ %>
-  <li><span><%= todo.content %></span></li>
-<% } %>
+    <ul id="task-list">
+    <% for (let todo of todos) { %>
+      
+      <li>
+        <span><%= todo.content %></span> - 締め切り: <span><%= dline.content %></span>
+      </li>
+    <% } %>
   </ul>
-  </body>
+  <p id="current-time"></p>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentTime = document.getElementById("current-time");
+
+      // 現在時刻表示
+      function updateCurrentTime() {
+        const now = new Date();
+        currentTime.textContent = `現在時刻: ${now.toLocaleString()}`;
+      }
+      setInterval(updateCurrentTime, 1000);
+    });
+  </script>
+</body>
 </html>
