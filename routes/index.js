@@ -22,9 +22,9 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
   const todo = req.body.add;
-  const dline = req.body.deadline;
+ 
   knex("tasks")
-    .insert({user_id: 1, content: todo,content: dline})
+    .insert({user_id: 1, content: todo})
     .then(function () {
       res.redirect('/')
     })

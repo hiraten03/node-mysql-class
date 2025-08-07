@@ -44,25 +44,47 @@
     <input type="submit" value="追加" />
   </form>
     <ul id="task-list">
-    <% for (let todo of todos) { %>
-      
-      <li>
-        <span><%= todo.content %></span> - 締め切り: <span><%= dline.content %></span>
-      </li>
-    <% } %>
+    
   </ul>
   <p id="current-time"></p>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const currentTime = document.getElementById("current-time");
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentTime = document.getElementById("current-time");
+    const taskForm = document.getElementById("task-form");
+    const taskList = document.getElementById("task-list");
 
-      // 現在時刻表示
-      function updateCurrentTime() {
-        const now = new Date();
-        currentTime.textContent = `現在時刻: ${now.toLocaleString()}`;
-      }
-      setInterval(updateCurrentTime, 1000);
+    // 現在時刻表示
+    function updateCurrentTime() {
+      const now = new Date();
+      currentTime.textContent = `現在時刻: ${now.toLocaleString()}`;
+    }
+    setInterval(updateCurrentTime, 1000);
+
+    // 締め切りまでの日数を計算
+    function calculateDaysLeft(deadline) {
+      const today = new Date();
+      const dueDate = new Date(deadline);
+      const timeDiff = dueDate - today;
+      const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      return daysLeft;
+    }
+
+    // タスク追加処理
+    taskForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const taskName = taskForm.elements["add"].value;
+      const deadline = taskForm.elements["deadline"].value;
+
+      const daysLeft = calculateDaysLeft(deadline);
+      const taskItem = document.createElement("li");
+
+      taskItem.textContent = `${taskName}（締め切り: ${deadline}、残り${daysLeft}日）`;
+      taskList.appendChild(taskItem);
+
+      taskForm.reset();
     });
-  </script>
+  });
+</script>
 </body>
 </html>
