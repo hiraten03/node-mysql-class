@@ -22,8 +22,9 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
   const todo = req.body.add;
+  const dline = req.body.deadline;
   knex("tasks")
-    .insert({user_id: 1, content: todo})
+    .insert({user_id: 1, content: todo,content: dline})
     .then(function () {
       res.redirect('/')
     })
@@ -36,5 +37,6 @@ router.post('/', function (req, res, next) {
 });
 
 router.use('/signup', require('./signup'));
+router.use('/signin', require('./signin'));
 
 module.exports = router;
